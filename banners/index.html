@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Hudd Premium Banners (Configurable)</title>
+		<title>Hudd Banners (Configurable)</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -138,6 +138,39 @@
 
 			select:hover {
 				border-color: #666;
+			}
+
+			.checkbox-wrapper {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			input[type="checkbox"] {
+				width: 18px;
+				height: 18px;
+				cursor: pointer;
+				accent-color: #134349;
+			}
+
+			.checkbox-label {
+				color: #ddd;
+				font-size: 14px;
+				font-weight: 500;
+				cursor: pointer;
+			}
+
+			/* Rounded corners class */
+			.banner.rounded {
+				border-radius: 12px;
+			}
+
+			.banner.rounded::after {
+				border-radius: 12px;
+			}
+
+			.banner.rounded::before {
+				border-radius: 12px;
 			}
 
 			/* Helper label for preview */
@@ -521,6 +554,13 @@
 					<option value="style-blue">Brand Blue</option>
 				</select>
 			</div>
+			<div class="control-group">
+				<span class="control-label">Corners</span>
+				<div class="checkbox-wrapper">
+					<input type="checkbox" id="roundedToggle" onchange="toggleRounded(this.checked)">
+					<label for="roundedToggle" class="checkbox-label">Rounded</label>
+				</div>
+			</div>
 		</div>
 
 		<!-- 1. 300x600 -->
@@ -831,6 +871,17 @@
 
 			function setStyle(styleName) {
 				document.body.className = styleName;
+			}
+
+			function toggleRounded(isRounded) {
+				const banners = document.querySelectorAll('.banner');
+				banners.forEach(banner => {
+					if (isRounded) {
+						banner.classList.add('rounded');
+					} else {
+						banner.classList.remove('rounded');
+					}
+				});
 			}
 
 			function capture(elementId, filename) {
