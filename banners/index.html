@@ -894,17 +894,35 @@
 				const lang = document.getElementById("langSelect").value;
 				const fullFilename = `${filename}_${lang}`;
 
+				// Get original dimensions
+				const width = element.offsetWidth;
+				const height = element.offsetHeight;
+
 				html2canvas(element, {
 					backgroundColor: null,
-					scale: 1,
+					scale: 2, // Render at 2x for better quality
 					useCORS: true,
 					logging: false,
 				})
 					.then((canvas) => {
 						element.classList.remove("exporting");
+
+						// Create a new canvas with original dimensions
+						const outputCanvas = document.createElement('canvas');
+						outputCanvas.width = width;
+						outputCanvas.height = height;
+						const ctx = outputCanvas.getContext('2d');
+
+						// Enable image smoothing for better downscaling quality
+						ctx.imageSmoothingEnabled = true;
+						ctx.imageSmoothingQuality = 'high';
+
+						// Draw the 2x canvas downscaled to original size
+						ctx.drawImage(canvas, 0, 0, width, height);
+
 						const link = document.createElement("a");
 						link.download = fullFilename + ".png";
-						link.href = canvas.toDataURL();
+						link.href = outputCanvas.toDataURL();
 						link.click();
 					})
 					.catch((err) => {
